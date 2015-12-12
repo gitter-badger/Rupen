@@ -9,43 +9,6 @@ Param
 	[string]$Url
 )
 
-function Initialize([string] $workingDirectory, [string] $scriptsDirectory, [string]$scriptsUrl, [string]$InitializeScript)
-{
-	[string] $scriptsPath = [System.IO.Path]::Combine($workingDirectory, $scriptsDirectory)
-	[string] $scriptsFile = [System.IO.Path]::Combine($workingDirectory, $scriptsDirectory + [System.IO.Path]::GetExtension($scriptsUrl))
-	Write-Verbose "SCRIPTS_PATH: $scriptsPath"
-
-    $fileExist = Test-Path $scriptsPath
-    if ($fileExist)
-    {
-        Write-Warning  "$scriptsPath already exist!"
-    }
-    else
-    {
-	    $downloadSuccess = Download $scriptsUrl $scriptsFile
-	    if ($downloadSuccess = $true)
-	    {
-		    $extractSuccess = Extract $scriptsFile $scriptsPath
-		    if ($extractSuccess = $true)
-		    {
-			    $moveFileExist = Test-Path $scriptsFile
-			    if ($moveFileExist)
-			    {
-				    Write-Verbose "Stating to move file $scriptsFile to $scriptsPath"
-				    Move-Item $scriptsFile $scriptsPath -force
-				    Write-Information "Move completed."
-			    }
-		    }
-	    }
-    }
-
-    $scriptsPath = [System.IO.Path]::Combine($scriptsPath, $InitializeScript)
-    Write-Verbose "Calling $scriptsPath"
-
-    & $scriptsPath -Build -ApplyVersion
-	Write-Verbose "The End!"
-}
-
 function Download([string]$url, [string]$file)
 {
     [bool]$output = $false
@@ -98,6 +61,43 @@ function Extract([string]$file, [string]$path)
         $output = $true
 	}
     return $output
+}
+
+function Initialize([string] $workingDirectory, [string] $scriptsDirectory, [string]$scriptsUrl, [string]$InitializeScript)
+{
+	[string] $scriptsPath = [System.IO.Path]::Combine($workingDirectory, $scriptsDirectory)
+	[string] $scriptsFile = [System.IO.Path]::Combine($workingDirectory, $scriptsDirectory + [System.IO.Path]::GetExtension($scriptsUrl))
+	Write-Verbose "SCRIPTS_PATH: $scriptsPath"
+
+    $fileExist = Test-Path $scriptsPath
+    if ($fileExist)
+    {
+        Write-Warning  "$scriptsPath already exist!"
+    }
+    else
+    {
+	    $downloadSuccess = Download $scriptsUrl $scriptsFile
+	    if ($downloadSuccess = $true)
+	    {
+		    $extractSuccess = Extract $scriptsFile $scriptsPath
+		    if ($extractSuccess = $true)
+		    {
+			    $moveFileExist = Test-Path $scriptsFile
+			    if ($moveFileExist)
+			    {
+				    Write-Verbose "Stating to move file $scriptsFile to $scriptsPath"
+				    Move-Item $scriptsFile $scriptsPath -force
+				    Write-Information "Move completed."
+			    }
+		    }
+	    }
+    }
+
+    $scriptsPath = [System.IO.Path]::Combine($scriptsPath, $InitializeScript)
+    Write-Verbose "Calling $scriptsPath"
+
+    & $scriptsPath -Build -ApplyVersion
+	Write-Verbose "The End!"
 }
 
 Clear-Host
