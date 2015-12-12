@@ -6,8 +6,7 @@ Param
     [string]$InitializeScript,
 	[parameter(Position=1, Mandatory=$true)]
 	[ValidateNotNullOrEmpty()]
-	[string]$Url,
-	[switch]$Verbose
+	[string]$Url
 )
 
 function Download([string]$url, [string]$file)
@@ -102,11 +101,6 @@ function Initialize([string] $workingDirectory, [string] $scriptsDirectory, [str
 }
 
 Clear-Host
-
-if ($Verbose)
-{
-	$VerbosePreference = "Continue"
-}
 
 Write-Verbose "RUNNING_SCRIPT: $($MyInvocation.MyCommand.Path)"
 Write-Verbose "CURRENT_DIRECTORY: $([System.Environment]::CurrentDirectory)"
