@@ -103,6 +103,7 @@ function Extract([string]$file, [string]$path)
 Clear-Host
 
 $VerbosePreference = "Continue"
+$InformationPreference = "Continue"
 
 #Write-Verbose "RUNNING_SCRIPT: $($MyInvocation.MyCommand.Path)"
 #Write-Verbose "CURRENT_DIRECTORY: $([System.Environment]::CurrentDirectory)"
