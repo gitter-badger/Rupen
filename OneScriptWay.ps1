@@ -6,7 +6,8 @@ Param
     [string]$InitializeScript,
 	[parameter(Position=1, Mandatory=$true)]
 	[ValidateNotNullOrEmpty()]
-	[string]$Url
+	[string]$Url,
+	[switch]$Verbose
 )
 
 function Download([string]$url, [string]$file)
@@ -85,7 +86,7 @@ function Initialize([string] $workingDirectory, [string] $scriptsDirectory, [str
 			    $moveFileExist = Test-Path $scriptsFile
 			    if ($moveFileExist)
 			    {
-				    Write-Verbose "Stating to move file $scriptsFile to $scriptsPath"
+				    Write-Verbose "Starting to move file $scriptsFile to $scriptsPath"
 				    Move-Item $scriptsFile $scriptsPath -force
 				    Write-Host "Move completed."
 			    }
@@ -102,10 +103,13 @@ function Initialize([string] $workingDirectory, [string] $scriptsDirectory, [str
 
 Clear-Host
 
-$VerbosePreference = "Continue"
+if ($Verbose)
+{
+	$VerbosePreference = "Continue"
+}
 
-#Write-Verbose "RUNNING_SCRIPT: $($MyInvocation.MyCommand.Path)"
-#Write-Verbose "CURRENT_DIRECTORY: $([System.Environment]::CurrentDirectory)"
+Write-Verbose "RUNNING_SCRIPT: $($MyInvocation.MyCommand.Path)"
+Write-Verbose "CURRENT_DIRECTORY: $([System.Environment]::CurrentDirectory)"
 
 [string] $runningDirectory = (Get-Item -Path ".\" -Verbose).FullName
 Write-Verbose "RUNNING_DIRECTORY: $runningDirectory"

@@ -29,6 +29,8 @@ function SetBuildNumber
 	{
 		Write-Error "Version number can't be a zero!"
 		exit -1
+	} else {
+		Write-Host "Version number is fine"
 	}
 
 	#region Set the version
