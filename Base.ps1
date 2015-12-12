@@ -26,18 +26,18 @@ function ApplyDefaultSettings
         #endregion
     }
 
-    #region WORKINGDIRECTORY
+    #region CURRENTDIRECTORY
     #$myInvocation = (Get-Variable MyInvocation).Value
-    #$workingDirectory = Split-Path $myInvocation.MyCommand.Path
-    $workingDirectory = [System.Environment]::CurrentDirectory
+    #$currentDirectory = Split-Path $myInvocation.MyCommand.Path
+    $currentDirectory = [System.Environment]::CurrentDirectory
     if ($desktop)
     {
-        $workingDirectory = [System.IO.Path]::Combine($env:USERPROFILE, "Desktop")
+        $currentDirectory = [System.IO.Path]::Combine($env:USERPROFILE, "Desktop")
     } elseif ($running) {
-		$workingDirectory =  (Get-Item -Path ".\" -Verbose).FullName
+		$currentDirectory =  (Get-Item -Path ".\" -Verbose).FullName
 	}
-	[System.Environment]::CurrentDirectory = $workingDirectory
-	Write-Verbose "WORKING_DIRECTORY: $workingDirectory"
+	[System.Environment]::CurrentDirectory = $currentDirectory
+	Write-Verbose "CURRENT_DIRECTORY: $currentDirectory"
     #endregion
 }
 

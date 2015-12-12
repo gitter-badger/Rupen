@@ -20,7 +20,7 @@ function ApplyVersionToAssemblies
 
 	if($files)
 	{
-		Write-Output "Will apply $BuildBuildNumber to $($files.count) files in $BuildSourcePath"
+		Write-Host "Will apply $BuildBuildNumber to $($files.count) files in $BuildSourcePath"
 
 		foreach ($file in $files) {
 			$filecontent = Get-Content($file)

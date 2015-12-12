@@ -27,7 +27,7 @@ function SetBuildNumber
 
 	if ($version -eq "0.0.0.000")
 	{
-		Write-Error "Version number can't be has an error!"
+		Write-Error "Version number can't be a zero!"
 		exit -1
 	}
 

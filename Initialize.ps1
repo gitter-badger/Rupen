@@ -12,7 +12,7 @@ $baseScript = [System.IO.Path]::Combine($currentDirectory, "Base.ps1")
 Write-Verbose "Including [Base] from $baseScript"
 
 . $baseScript
-ApplyDefaultSettings -preferences -modules -desktop
+ApplyDefaultSettings -preferences
 
 if ($Build)
 {
