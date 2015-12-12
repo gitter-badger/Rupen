@@ -77,6 +77,9 @@ Write-Verbose "including [SetBuildNumber] from $vsoBuildScriptSetBuildNumber"
 . $vsoBuildScriptSetBuildNumber
 
 (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber)
+
+Write-Verbose "Detected version $Env:BUILD_BUILDNUMBER"
+
 if ($ApplyVersion)
 {
 	$vsoBuildScriptApplyVersionToAssemblies = [System.IO.Path]::Combine($vsoBuildScriptsPath, "ApplyVersionToAssemblies.ps1")
