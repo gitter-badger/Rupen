@@ -22,7 +22,7 @@ function SetBuildNumber
 	[string]$buildVersion = ($BuildSourceVersion -replace'\D+(\d+)','$1')
 	[string]$revisionVersion = $buildNumber[0].PadLeft(3, "0") + $buildNumber[1]
 	[string]$version = $MajorVersion + "." + $MinorVersion + "." + $buildVersion + "." + $revisionVersion
-	Write-Output "VERSION: $version"
+	Write-Host "VERSION: $version"
 	#endregion
 
 	if ($version -eq "0.0.0.000")
@@ -33,7 +33,7 @@ function SetBuildNumber
 
 	#region Set the version
 	#[Environment]::SetEnvironmentVariable("$Env:BUILD_BUILDNUMBER", "$version", "User")
-	Write-Output ("##vso[task.setvariable variable=build.buildnumber;]$version")
-	Write-Output ("##vso[build.updatebuildnumber]$version")
+	Write-Host ("##vso[task.setvariable variable=build.buildnumber;]$version")
+	Write-Host ("##vso[build.updatebuildnumber]$version")
 	#endregion
 }
