@@ -14,13 +14,13 @@ Param
 if (-not $BuildSourceVersion)
 {
 	# Make sure environment build source version is available
-	if (-not $Env:BuildSourceVersion)
+	if (-not $Env:BUILD_SOURCEVERSION)
 	{
 		Write-Warning ("BUILD_SOURCEVERSION environment variable is missing.")
 		$BuildSourceVersion = 0
 	} else {
-		Write-Verbose "BUILD_SOURCEVERSION: $Env:BuildSourceVersion"
-		$BuildSourceVersion = $Env:BuildSourceVersion
+		Write-Verbose "ENV:BUILD_SOURCEVERSION: $Env:BUILD_SOURCEVERSION"
+		$BuildSourceVersion = $Env:BUILD_SOURCEVERSION
 	}
 }
 Write-Verbose "BUILD_SOURCEVERSION: $BuildSourceVersion"
@@ -29,13 +29,13 @@ Write-Verbose "BUILD_SOURCEVERSION: $BuildSourceVersion"
 if (-not $BuildBuildNumber)
 {
 	# Make sure environment build number is available
-	if (-not $Env:BuildBuildNumber)
+	if (-not $Env:BUILD_BUILDNUMBER)
 	{
 		Write-Warning ("BUILD_BUILDNUMBER environment variable is missing.")
 		$BuildBuildNumber = 0
 	} else {
-		Write-Verbose "ENV:BUILD_BUILDNUMBER: $Env:BuildBuildNumber"
-		$BuildBuildNumber = $Env:BuildBuildNumber
+		Write-Verbose "ENV:BUILD_BUILDNUMBER: $Env:BUILD_BUILDNUMBER"
+		$BuildBuildNumber = $Env:BUILD_BUILDNUMBER
 	}
 }
 Write-Verbose "BUILD_BUILDNUMBER: $BuildBuildNumber"
