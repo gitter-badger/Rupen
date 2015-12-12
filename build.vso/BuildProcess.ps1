@@ -76,16 +76,13 @@ $vsoBuildScriptSetBuildNumber = [System.IO.Path]::Combine($vsoBuildScriptsPath, 
 Write-Verbose "including [SetBuildNumber] from $vsoBuildScriptSetBuildNumber"
 . $vsoBuildScriptSetBuildNumber
 
-$buildNumberResult = (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber)
-if ($buildNumberResult)
+(SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber)
+if ($ApplyVersion)
 {
-	if ($applyVersion)
-	{
-		$vsoBuildScriptApplyVersionToAssemblies = [System.IO.Path]::Combine($vsoBuildScriptsPath, "ApplyVersionToAssemblies.ps1")
-		Write-Verbose "including [ApplyVersionToAssemblies] from $vsoBuildScriptApplyVersionToAssemblies"
-		. $vsoBuildScriptApplyVersionToAssemblies
-		(ApplyVersionToAssemblies $([System.Environment]::CurrentDirectory) $BuildBuildNumber)
-	}
+	$vsoBuildScriptApplyVersionToAssemblies = [System.IO.Path]::Combine($vsoBuildScriptsPath, "ApplyVersionToAssemblies.ps1")
+	Write-Verbose "including [ApplyVersionToAssemblies] from $vsoBuildScriptApplyVersionToAssemblies"
+	. $vsoBuildScriptApplyVersionToAssemblies
+	(ApplyVersionToAssemblies $([System.Environment]::CurrentDirectory) $BuildBuildNumber)
 }
 
 SetPreferencesToSilentlyContinue
