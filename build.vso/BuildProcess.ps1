@@ -78,14 +78,14 @@ Write-Verbose "including [SetBuildNumber] from $vsoBuildScriptSetBuildNumber"
 
 (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber)
 
-Write-Verbose "Detected version $Env:BUILD_BUILDNUMBER"
+Write-Verbose "NEW ENV:BUILD_BUILDNUMBER: $Env:BUILD_BUILDNUMBER"
 
 if ($ApplyVersion)
 {
 	$vsoBuildScriptApplyVersionToAssemblies = [System.IO.Path]::Combine($vsoBuildScriptsPath, "ApplyVersionToAssemblies.ps1")
 	Write-Verbose "including [ApplyVersionToAssemblies] from $vsoBuildScriptApplyVersionToAssemblies"
 	. $vsoBuildScriptApplyVersionToAssemblies
-	(ApplyVersionToAssemblies $([System.Environment]::CurrentDirectory) $BuildBuildNumber)
+	(ApplyVersionToAssemblies $([System.Environment]::CurrentDirectory) $Env:BUILD_BUILDNUMBER)
 }
 
 SetPreferencesToSilentlyContinue
