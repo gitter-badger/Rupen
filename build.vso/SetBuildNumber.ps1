@@ -1,56 +1,39 @@
-[CmdletBinding()]
-param(
-	[string]$MajorVersion
-)
-
-# Enable -Verbose option
-$VerbosePreference = 'Continue'
-
-#region validations
-# Make sure there is a build number
-if (-not $Env:BUILD_SOURCEVERSION)
+function SetBuildNumber
 {
-    Write-Error ("BUILD_SOURCEVERSION environment variable is missing.")
-    exit 1
-}
-Write-Verbose "BUILD_SOURCEVERSION: $Env:BUILD_SOURCEVERSION"
+    [CmdletBinding()]
+    Param
+    (
+        [parameter(Position=0, Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$MajorVersion,
+	    [parameter(Position=1, Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$MinorVersion,
+	    [parameter(Position=2, Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$BuildSourceVersion,			#$Env:BUILD_SOURCEVERSION e.g. C325
+	    [parameter(Position=3, Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$BuildBuildNumber				#$Env:BUILD_BUILDNUMBER e.g.365.1
+    )
 
-# Make sure there is a build number
-if (-not $Env:BUILD_BUILDNUMBER)
-{
-    Write-Error ("BUILD_BUILDNUMBER environment variable is missing.")
-    exit 1
-}
-Write-Verbose "BUILD_BUILDNUMBER: $Env:BUILD_BUILDNUMBER"
+	#region Construct the version
+	[string[]]$buildNumber = $BuildBuildNumber.Split(".",[System.StringSplitOptions]::RemoveEmptyEntries)
+	[string]$buildVersion = ($BuildSourceVersion -replace'\D+(\d+)','$1')
+	[string]$revisionVersion = $buildNumber[0].PadLeft(3, "0") + $buildNumber[1]
+	[string]$version = $MajorVersion + "." + $MinorVersion + "." + $buildVersion + "." + $revisionVersion
+	Write-Verbose "VERSION: $version"
+	#endregion
 
-# Make sure major version is available
-if (-not $MajorVersion)
-{
-	# Make sure environment major version is available
-	if (-not $Env:MajorVersion)
+	if ($version -eq "0.0.0.000")
 	{
-		Write-Warning ("MAJORVERSION environment variable is missing.")
-		$MajorVersion = 0
-	} else {
-		Write-Verbose "ENV:MAJORVERSION: $Env:MajorVersion"
-		$MajorVersion = $Env:MajorVersion
+		Write-Error "Version number has an error!"
+		exit -1
 	}
+
+	#region Set the version
+	#[Environment]::SetEnvironmentVariable("$Env:BUILD_BUILDNUMBER", "$version", "User")
+	Write-Output ("##vso[task.setvariable variable=build.buildnumber;]$version")
+	Write-Output ("##vso[build.updatebuildnumber]$version")
+	#endregion
 }
-Write-Verbose "MAJORVERSION: $MajorVersion"
-#endregion
-
-#region Construct the version
-$buildNumber = $Env:BUILD_BUILDNUMBER.Split(".",[System.StringSplitOptions]::RemoveEmptyEntries)
-$minorVersion = ($Env:BUILD_SOURCEVERSION -replace'\D+(\d+)','$1')
-$buildVersion = $buildNumber[0].PadLeft(3, "0")
-$revisionVersion = $buildNumber[1].PadLeft(2, "0") + $buildNumber[2].PadLeft(2, "0") + $buildNumber[3] 
-$version = $MajorVersion + "." + $minorVersion + "." + $buildVersion + "." + $revisionVersion
-Write-Verbose "Version: $version"
-#endregion
-
-#region Set the version
-$Env:BUILD_BUILDNUMBER = $version
-#[Environment]::SetEnvironmentVariable("$Env:BUILD_BUILDNUMBER", "$version", "User")
-Write-Host ("##vso[task.setvariable variable=build.buildnumber;]$version")
-Write-Host ("##vso[build.updatebuildnumber]$version")
-#endregion

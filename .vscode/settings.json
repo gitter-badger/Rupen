@@ -1,13 +1,28 @@
 {
-    "files.exclude": {
+	"files.exclude": {
+		"**/.git": true,
+		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
 		"**/ehthumbs.db": true,
 		"**/Desktop.ini": true,
 		"**/$RECYCLE.BIN": true,
-        "**/.DS_Store": true,        
-        "**/.git": true,
-        "node_modules": true,
-        "bower_components": true,
-        "typings": true
-    }
+		"node_modules": true,
+		"bower_components": true,
+		"typings": true,
+		"bin": true,
+		"**/*.js.map": false,
+		"**/*.js": {
+			"when": "$(basename).ts"
+		}
+	},
+	"editor.insertSpaces": false,
+	"editor.wrappingColumn": 0,
+	"files.trimTrailingWhitespace": true,
+	"search.exclude": {
+		"**/node_modules/**": true,
+		"**/bower_components": true,
+		"typings": true,
+		".build/**": true,
+		"out*/**": true
+	}
 }

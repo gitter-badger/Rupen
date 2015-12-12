@@ -1,48 +1,36 @@
-# Enable -Verbose option
-$VerbosePreference = 'Continue'
-
-#region validations
-# Make sure path to source code directory is available
-if (-not $Env:BUILD_SOURCESDIRECTORY)
+function ApplyVersionToAssemblies
 {
-    Write-Error ("BUILD_SOURCESDIRECTORY environment variable is missing.")
-    exit 1
-}
-elseif (-not (Test-Path $Env:BUILD_SOURCESDIRECTORY))
-{
-    Write-Error "BUILD_SOURCESDIRECTORY does not exist: $Env:BUILD_SOURCESDIRECTORY"
-    exit 1
-}
-Write-Verbose "BUILD_SOURCESDIRECTORY: $Env:BUILD_SOURCESDIRECTORY"
+    [CmdletBinding()]
+    Param
+    (
+		[parameter(Position=0, Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+		[string]$BuildSourcePath,
+		[parameter(Position=1, Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$BuildBuildNumber
+    )
 
-# Make sure there is a build number
-if (-not $Env:BUILD_BUILDNUMBER)
-{
-    Write-Error ("BUILD_BUILDNUMBER environment variable is missing.")
-    exit 1
-}
-Write-Verbose "BUILD_BUILDNUMBER: $Env:BUILD_BUILDNUMBER"
-#endregion
+	# Regular expression pattern to find the version in the build number
+	# and then apply it to the assemblies
+	$VersionRegex = "\d+\.\d+\.\d+\.\d+"
 
-# Regular expression pattern to find the version in the build number 
-# and then apply it to the assemblies
-$VersionRegex = "\d+\.\d+\.\d+\.\d+"
+	# Apply the version to the assembly property files
+	$files = Get-ChildItem $BuildSourcePath -recurse -include "*AssemblyInfo.cs"
 
-# Apply the version to the assembly property files
-$files = gci $Env:BUILD_SOURCESDIRECTORY -recurse -include "*AssemblyInfo.cs"
+	if($files)
+	{
+		Write-Output "Will apply $BuildBuildNumber to $($files.count) files in $BuildSourcePath"
 
-if($files)
-{
-    Write-Host "Will apply $Env:BUILD_BUILDNUMBER to $($files.count) files."
-
-    foreach ($file in $files) {
-        $filecontent = Get-Content($file)
-        attrib $file -r
-        $filecontent -replace $VersionRegex, $Env:BUILD_BUILDNUMBER | Out-File $file
-        Write-Verbose "$file.FullName - version applied"
-    }
-}
-else
-{
-    Write-Warning "Found no files."
+		foreach ($file in $files) {
+			$filecontent = Get-Content($file)
+			attrib $file -r
+			$filecontent -replace $VersionRegex, $BuildBuildNumber | Out-File $file
+			Write-Verbose "$file.FullName - version applied"
+		}
+	}
+	else
+	{
+		Write-Warning "No file found at $BuildSourcePath"
+	}
 }
