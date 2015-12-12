@@ -66,7 +66,7 @@ function CreateDirectory
 	{
         Write-Verbose "Creating directory $path"
 		New-Item -ItemType Directory -Force -Path $path
-        Write-Information "Directory created"
+        Write-Output "Directory created"
 	}
 }
 
@@ -88,7 +88,7 @@ function Download([string]$url, [string]$file)
 	    #Invoke-WebRequest -Uri $url -OutFile $file
 	    $webclient = New-Object System.Net.WebClient
         $webclient.DownloadFile($url, $file)
-        Write-Information "Download completed."
+        Write-Output "Download completed."
         $output = $true
     }
     catch
@@ -119,7 +119,7 @@ function Extract([string]$file, [string]$path)
 		Write-Verbose "Starting to extract from $file to $path"
 		Add-Type -assembly "System.IO.Compression.FileSystem"
 		[System.IO.Compression.ZipFile]::ExtractToDirectory($file, $path)
-		Write-Information "Extract completed."
+		Write-Output "Extract completed."
         $output = $true
 	}
     return $output

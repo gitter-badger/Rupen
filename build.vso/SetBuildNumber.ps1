@@ -22,7 +22,7 @@ function SetBuildNumber
 	[string]$buildVersion = ($BuildSourceVersion -replace'\D+(\d+)','$1')
 	[string]$revisionVersion = $buildNumber[0].PadLeft(3, "0") + $buildNumber[1]
 	[string]$version = $MajorVersion + "." + $MinorVersion + "." + $buildVersion + "." + $revisionVersion
-	Write-Information "VERSION: $version"
+	Write-Output "VERSION: $version"
 	#endregion
 
 	if ($version -eq "0.0.0.000")

@@ -26,7 +26,7 @@ function Download([string]$url, [string]$file)
 	    #Invoke-WebRequest -Uri $url -OutFile $file
 	    $webclient = New-Object System.Net.WebClient
         $webclient.DownloadFile($url, $file)
-        Write-Information "Download completed."
+        Write-Output "Download completed."
         $output = $true
     }
     catch
@@ -57,7 +57,7 @@ function Extract([string]$file, [string]$path)
 		Write-Verbose "Starting to extract from $file to $path"
 		Add-Type -assembly "System.IO.Compression.FileSystem"
 		[System.IO.Compression.ZipFile]::ExtractToDirectory($file, $path)
-		Write-Information "Extract completed."
+		Write-Output "Extract completed."
         $output = $true
 	}
     return $output
@@ -87,7 +87,7 @@ function Initialize([string] $workingDirectory, [string] $scriptsDirectory, [str
 			    {
 				    Write-Verbose "Stating to move file $scriptsFile to $scriptsPath"
 				    Move-Item $scriptsFile $scriptsPath -force
-				    Write-Information "Move completed."
+				    Write-Output "Move completed."
 			    }
 		    }
 	    }
@@ -103,7 +103,6 @@ function Initialize([string] $workingDirectory, [string] $scriptsDirectory, [str
 Clear-Host
 
 $VerbosePreference = "Continue"
-$InformationPreference = "Continue"
 
 #Write-Verbose "RUNNING_SCRIPT: $($MyInvocation.MyCommand.Path)"
 #Write-Verbose "CURRENT_DIRECTORY: $([System.Environment]::CurrentDirectory)"

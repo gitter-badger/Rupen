@@ -77,20 +77,6 @@ Write-Verbose "including [SetBuildNumber] from $vsoBuildScriptSetBuildNumber"
 . $vsoBuildScriptSetBuildNumber
 
 $buildNumberResult = (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber)
-<#
-foreach ($Data in $buildNumberResult)
-{
-	Write-Warning $buildNumberResult
-}
-
-$error.clear()
-try { something }
-catch { "Error occured" }
-if (!$error) {
-"No Error Occured"
-}
-#>
-
 if ($buildNumberResult)
 {
 	if ($applyVersion)
