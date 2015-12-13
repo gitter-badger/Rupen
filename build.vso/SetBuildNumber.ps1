@@ -11,10 +11,10 @@ function SetBuildNumber
         [string]$MinorVersion,
 	    [parameter(Position=2, Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [string]$BuildSourceVersion,			#e.g. CS1234 or dd6558d478fd3cc3cd6fbe5eacdee94a5094273a
+        [string]$BuildSourceVersion,			# e.g. CS1234 or dd6558d478fd3cc3cd6fbe5eacdee94a5094273a
 	    [parameter(Position=3, Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [string]$BuildBuildNumber,				#e.g. 09.0824.236.1 => $(Year:yy).$(Month)$(DayOfMonth).$(DayOfYear).$(Rev:r)
+        [string]$BuildBuildNumber,				# e.g. 09.0824.236.1 => $(Year:yy).$(Month)$(DayOfMonth).$(DayOfYear).$(Rev:r)
 	    [parameter(Position=4, Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
         [string]$BuildBuildId,
@@ -35,7 +35,7 @@ function SetBuildNumber
 
 	Write-Host $BuildRepositoryProvider
 
-	if ($BuildRepositoryProvider -eq "TFVC")
+	if ($BuildRepositoryProvider -eq "TfsVersionControl")
 	{
 		$revisionVersion = ($BuildSourceVersion -replace'\D+(\d+)','$1')
 	}
