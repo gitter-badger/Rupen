@@ -5,8 +5,8 @@ Param
     [string]$Directory,
 	[string]$MajorVersion,
 	[string]$MinorVersion,
-	[string]$BuildSourceVersion = "C325",
-	[string]$BuildBuildNumber = "365.1"
+	[string]$BuildSourceVersion,
+	[string]$BuildBuildNumber
 )
 
 #region validations
