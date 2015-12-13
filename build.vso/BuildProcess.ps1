@@ -102,10 +102,6 @@ if (-not $BuildRepositoryProvider)
 	}
 }
 Write-Verbose "BUILD_REPOSITORY_PROVIDER: $BuildRepositoryProvider"
-
-
-Build.Repository.Provider
-
 #endregion
 
 $vsoBuildScriptSetBuildNumber = [System.IO.Path]::Combine($vsoBuildScriptsPath, "SetBuildNumber.ps1")
