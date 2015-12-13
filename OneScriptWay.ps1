@@ -3,7 +3,7 @@ Param
 (
 	[parameter(Position=0, Mandatory=$true)]
 	[ValidateNotNullOrEmpty()]
-    [string]$InitializeScript,
+	[string]$InitializeScript,
 	[parameter(Position=1, Mandatory=$true)]
 	[ValidateNotNullOrEmpty()]
 	[string]$Url
@@ -52,22 +52,22 @@ function Extract([string]$file, [string]$path)
 	if ($pathExist)
 	{
 		Write-Warning "$path already exist, no extraction will be done"
-        $output = $true
+    	$output = $true
 	} else {
 		Write-Verbose "Starting to extract from $file to $path"
 		Add-Type -assembly "System.IO.Compression.FileSystem"
 		[System.IO.Compression.ZipFile]::ExtractToDirectory($file, $path)
 		Write-Host "Extract completed."
-        $output = $true
+    	$output = $true
 	}
     return $output
 }
 
 function Initialize([string] $workingDirectory, [string] $scriptsDirectory, [string]$scriptsUrl, [string]$InitializeScript)
 {
-	[string] $scriptsPath = [System.IO.Path]::Combine($workingDirectory, $scriptsDirectory)
-	[string] $scriptsFile = [System.IO.Path]::Combine($workingDirectory, $scriptsDirectory + [System.IO.Path]::GetExtension($scriptsUrl))
-	Write-Verbose "SCRIPTS_PATH: $scriptsPath"
+    [string] $scriptsPath = [System.IO.Path]::Combine($workingDirectory, $scriptsDirectory)
+    [string] $scriptsFile = [System.IO.Path]::Combine($workingDirectory, $scriptsDirectory + [System.IO.Path]::GetExtension($scriptsUrl))
+    Write-Verbose "SCRIPTS_PATH: $scriptsPath"
 
     $fileExist = Test-Path $scriptsPath
     if ($fileExist)
@@ -97,7 +97,7 @@ function Initialize([string] $workingDirectory, [string] $scriptsDirectory, [str
     Write-Verbose "Calling $scriptsPath"
 
     & $scriptsPath -Build -ApplyVersion
-	Write-Verbose "The End!"
+    Write-Verbose "The End!"
 }
 
 Clear-Host
