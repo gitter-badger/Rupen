@@ -24,8 +24,8 @@ if ($Build)
 
 	if ($ApplyVersion)
 	{
-		. $vsoBuildScriptBuildProcess -ApplyVersion
+		. $vsoBuildScriptBuildProcess -ApplyVersion $([System.Environment]::CurrentDirectory)
 	} else {
-		. $vsoBuildScriptBuildProcess
+		. $vsoBuildScriptBuildProcess $([System.Environment]::CurrentDirectory)
 	}
 }

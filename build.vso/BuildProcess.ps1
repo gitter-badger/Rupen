@@ -2,10 +2,11 @@
 Param
 (
 	[switch]$ApplyVersion,
-    [string]$MajorVersion,
+    [string]$Directory,
+	[string]$MajorVersion,
 	[string]$MinorVersion,
-	[string]$BuildSourceVersion,
-	[string]$BuildBuildNumber
+	[string]$BuildSourceVersion = "C325",
+	[string]$BuildBuildNumber = "365.1"
 )
 
 #region validations
@@ -76,16 +77,14 @@ $vsoBuildScriptSetBuildNumber = [System.IO.Path]::Combine($vsoBuildScriptsPath, 
 Write-Verbose "including [SetBuildNumber] from $vsoBuildScriptSetBuildNumber"
 . $vsoBuildScriptSetBuildNumber
 
-(SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber)
-
-Write-Verbose "NEW ENV:BUILD_BUILDNUMBER: $Env:BUILD_BUILDNUMBER"
+$version = (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber)
 
 if ($ApplyVersion)
 {
 	$vsoBuildScriptApplyVersionToAssemblies = [System.IO.Path]::Combine($vsoBuildScriptsPath, "ApplyVersionToAssemblies.ps1")
 	Write-Verbose "including [ApplyVersionToAssemblies] from $vsoBuildScriptApplyVersionToAssemblies"
 	. $vsoBuildScriptApplyVersionToAssemblies
-	(ApplyVersionToAssemblies $([System.Environment]::CurrentDirectory) $Env:BUILD_BUILDNUMBER)
+	(ApplyVersionToAssemblies $directory $version)
 }
 
 SetPreferencesToSilentlyContinue
