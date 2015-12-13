@@ -20,7 +20,7 @@ function SetBuildNumber
 	#region Construct the version
 	[string[]]$buildNumber = $BuildBuildNumber.Split(".",[System.StringSplitOptions]::RemoveEmptyEntries)
 	[string]$buildVersion = ($BuildSourceVersion -replace'\D+(\d+)','$1')
-	[string]$revisionVersion = $buildNumber[0].PadLeft(3, "0") + $buildNumber[1]
+	[string]$revisionVersion = $buildNumber[0].PadLeft(4, "0") + $buildNumber[1]
 	[string]$version = $MajorVersion + "." + $MinorVersion + "." + $buildVersion + "." + $revisionVersion
 	Write-Host "VERSION: $version"
 	#endregion
