@@ -11,13 +11,16 @@ function SetBuildNumber
         [string]$MinorVersion,
 	    [parameter(Position=2, Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [string]$BuildSourceVersion,			#$Env:BUILD_SOURCEVERSION e.g. C325
+        [string]$BuildSourceVersion,			#e.g. CS1234 or dd6558d478fd3cc3cd6fbe5eacdee94a5094273a
 	    [parameter(Position=3, Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [string]$BuildBuildNumber,				#$Env:BUILD_BUILDNUMBER e.g. 09.0824.236.1 => $(Year:yy).$(Month)$(DayOfMonth).$(DayOfYear).$(Rev:r)
+        [string]$BuildBuildNumber,				#e.g. 09.0824.236.1 => $(Year:yy).$(Month)$(DayOfMonth).$(DayOfYear).$(Rev:r)
 	    [parameter(Position=4, Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [string]$BuildBuildId
+        [string]$BuildBuildId,
+		[parameter(Position=5, Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+		[string]$BuildRepositoryProvider		# TFVC, TfGit, Git
     )
 
 	#region Construct the version
@@ -28,7 +31,14 @@ function SetBuildNumber
 	# [string]$revisionVersion = $buildNumber[2].PadLeft(3, "0") + $buildNumber[3]
 
 	[string]$buildVersion = $BuildBuildId
-	[string]$revisionVersion = ($BuildSourceVersion -replace'\D+(\d+)','$1')
+	[string]$revisionVersion = $buildNumber[2].PadLeft(3, "0") + $buildNumber[3]
+
+	Write-Host $BuildRepositoryProvider
+
+	if ($BuildRepositoryProvider -eq "TFVC")
+	{
+		$revisionVersion = ($BuildSourceVersion -replace'\D+(\d+)','$1')
+	}
 
 	[string]$version = $MajorVersion + "." + $MinorVersion + "." + $buildVersion + "." + $revisionVersion
 	Write-Host "VERSION: $version"

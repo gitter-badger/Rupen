@@ -7,7 +7,8 @@ Param
 	[string]$MinorVersion,
 	[string]$BuildSourceVersion,
 	[string]$BuildBuildNumber,
-	[string]$BuildBuilId
+	[string]$BuildBuilId,
+	[string]$BuildRepositoryProvider
 )
 
 #region validations
@@ -72,10 +73,10 @@ if (-not $BuildBuildNumber)
 }
 Write-Verbose "BUILD_BUILDNUMBER: $BuildBuildNumber"
 
-# Make sure there is a build number
+# Make sure there is a build id
 if (-not $BuildBuildId)
 {
-	# Make sure environment build number is available
+	# Make sure environment build id is available
 	if (-not $Env:BUILD_BUILDID)
 	{
 		Write-Warning ("BUILD_BUILDID environment variable is missing.")
@@ -87,13 +88,31 @@ if (-not $BuildBuildId)
 }
 Write-Verbose "BUILD_BUILDID: $BuildBuildId"
 
+# Make sure there is a build repository provider
+if (-not $BuildRepositoryProvider)
+{
+	# Make sure environment build repository provider is available
+	if (-not $Env:BUILD_REPOSITORY_PROVIDER)
+	{
+		Write-Warning ("BUILD_REPOSITORY_PROVIDER environment variable is missing.")
+		$BuildRepositoryProvider = "TFVC"
+	} else {
+		Write-Verbose "ENV:BUILD_REPOSITORY_PROVIDER: $Env:BUILD_REPOSITORY_PROVIDER"
+		$BuildRepositoryProvider = $Env:BUILD_REPOSITORY_PROVIDER
+	}
+}
+Write-Verbose "BUILD_REPOSITORY_PROVIDER: $BuildRepositoryProvider"
+
+
+Build.Repository.Provider
+
 #endregion
 
 $vsoBuildScriptSetBuildNumber = [System.IO.Path]::Combine($vsoBuildScriptsPath, "SetBuildNumber.ps1")
 Write-Verbose "including [SetBuildNumber] from $vsoBuildScriptSetBuildNumber"
 . $vsoBuildScriptSetBuildNumber
 
-$version = (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber $BuildBuildId)
+$version = (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber $BuildBuildId $BuildRepositoryProvider)
 
 if ($ApplyVersion)
 {
