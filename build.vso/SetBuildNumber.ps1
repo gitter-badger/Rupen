@@ -53,12 +53,10 @@ function SetBuildNumber
 		exit -1
 	}
 
-	[string]$finalBuildNumber = $BuildDefinitionName + "_" + $version
-
 	#[Environment]::SetEnvironmentVariable($Env:BUILD_BUILDNUMBER,$version, "User")
 
-	Write-Host "##vso[task.setvariable variable=build.buildnumber;]$finalBuildNumber"
-	Write-Host "##vso[build.updatebuildnumber]$finalBuildNumber"
+	Write-Host "##vso[task.setvariable variable=build.buildnumber;]$version"
+	Write-Host "##vso[build.updatebuildnumber]$version"
 
 	return $version
 }
