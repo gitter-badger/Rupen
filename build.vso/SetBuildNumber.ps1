@@ -27,7 +27,7 @@ function SetBuildNumber
     )
 
 	#region Construct the version
-	[string[]]$buildNumber = $BuildBuildNumber[0].Split(".",[System.StringSplitOptions]::RemoveEmptyEntries)
+	[string[]]$buildNumber = $BuildBuildNumber.Split(".",[System.StringSplitOptions]::RemoveEmptyEntries)
 
 	# TEMPORARY COMMENTED due to https://connect.microsoft.com/VisualStudio/Feedback/Details/2122771
 	# [string]$buildVersion = ($BuildSourceVersion -replace'\D+(\d+)','$1')
