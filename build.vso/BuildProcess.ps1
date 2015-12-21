@@ -8,7 +8,8 @@ Param
 	[string]$BuildSourceVersion,
 	[string]$BuildBuildNumber,
 	[string]$BuildBuilId,
-	[string]$BuildRepositoryProvider
+	[string]$BuildRepositoryProvider,
+	[string]$BuildDefinitionName
 )
 
 #region validations
@@ -102,13 +103,28 @@ if (-not $BuildRepositoryProvider)
 	}
 }
 Write-Verbose "BUILD_REPOSITORY_PROVIDER: $BuildRepositoryProvider"
+
+# Make sure there is a build definition
+if (-not $BuildDefinitionName)
+{
+	# Make sure environment build definition is available
+	if (-not $Env:BUILD_DEFINITIONNAME)
+	{
+		Write-Warning ("BUILD_DEFINITIONNAME environment variable is missing.")
+		$BuildDefinitionName = "DEFAULT"
+	} else {
+		Write-Verbose "ENV:BUILD_DEFINITIONNAME: $Env:BUILD_DEFINITIONNAME"
+		$BuildDefinitionName = $Env:BUILD_DEFINITIONNAME
+	}
+}
+Write-Verbose "BUILD_DEFINITIONNAME: $BuildRepositoryProvider"
 #endregion
 
 $vsoBuildScriptSetBuildNumber = [System.IO.Path]::Combine($vsoBuildScriptsPath, "SetBuildNumber.ps1")
 Write-Verbose "including [SetBuildNumber] from $vsoBuildScriptSetBuildNumber"
 . $vsoBuildScriptSetBuildNumber
 
-$version = (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber $BuildBuildId $BuildRepositoryProvider)
+$version = (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber $BuildBuildId $BuildRepositoryProvider $BuildDefinition)
 
 if ($ApplyVersion)
 {

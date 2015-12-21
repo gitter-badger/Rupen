@@ -20,11 +20,14 @@ function SetBuildNumber
         [string]$BuildBuildId,
 		[parameter(Position=5, Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-		[string]$BuildRepositoryProvider		# TFVC, TfGit, Git
+		[string]$BuildRepositoryProvider,		# TFVC, TfGit, Git
+		[parameter(Position=6, Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[string]$BuildDefinitionName
     )
 
 	#region Construct the version
-	[string[]]$buildNumber = $BuildBuildNumber.Split(".",[System.StringSplitOptions]::RemoveEmptyEntries)
+	[string[]]$buildNumber = $BuildBuildNumber[0].Split(".",[System.StringSplitOptions]::RemoveEmptyEntries)
 
 	# TEMPORARY COMMENTED due to https://connect.microsoft.com/VisualStudio/Feedback/Details/2122771
 	# [string]$buildVersion = ($BuildSourceVersion -replace'\D+(\d+)','$1')
@@ -50,10 +53,12 @@ function SetBuildNumber
 		exit -1
 	}
 
+	[string]$finalBuildNumber = $BuildDefinitionName + "_" + $version
+
 	#[Environment]::SetEnvironmentVariable($Env:BUILD_BUILDNUMBER,$version, "User")
 
-	Write-Host "##vso[task.setvariable variable=build.buildnumber;]$version"
-	Write-Host "##vso[build.updatebuildnumber]$version"
+	Write-Host "##vso[task.setvariable variable=build.buildnumber;]$finalBuildNumber"
+	Write-Host "##vso[build.updatebuildnumber]$finalBuildNumber"
 
 	return $version
 }
