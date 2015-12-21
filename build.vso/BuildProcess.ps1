@@ -124,7 +124,7 @@ $vsoBuildScriptSetBuildNumber = [System.IO.Path]::Combine($vsoBuildScriptsPath, 
 Write-Verbose "including [SetBuildNumber] from $vsoBuildScriptSetBuildNumber"
 . $vsoBuildScriptSetBuildNumber
 
-$version = (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber $BuildBuildId $BuildRepositoryProvider $BuildDefinition)
+$version = (SetBuildNumber $MajorVersion $MinorVersion $BuildSourceVersion $BuildBuildNumber $BuildBuildId $BuildRepositoryProvider $BuildDefinitionName)
 
 if ($ApplyVersion)
 {
