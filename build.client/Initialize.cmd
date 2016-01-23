@@ -2,4 +2,5 @@
 CALL npm install
 CALL bower install
 @REM CALL tsd install
+@REM CALL tsd install node --resolve --save --overwrite
 CALL tsd reinstall --save --overwrite
