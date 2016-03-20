@@ -11,7 +11,7 @@ function ReplaceVersion([string]$BuildSourcePath, [string] $versionFile, [string
 			$filecontent = Get-Content($file)
 			attrib $file -r
 			$filecontent -replace $regexPattern, $finalVersion | Out-File $file
-			Write-Verbose "$file.FullName - version applied"
+			Write-Verbose "$file - version applied"
 		}
     }
     return $output
