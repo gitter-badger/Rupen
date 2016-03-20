@@ -32,7 +32,7 @@ function ApplyVersionToAssemblies
 
 	$replaceSucceed1 = (ReplaceVersion $BuildSourcePath "project.json" '\s*\"version\"\s*:\s*\"\d+\.\d+\.\d+-\*?(\w*)\"' '  "version": "' + $BuildBuildNumber + '"')
 	$replaceSucceed2 = (ReplaceVersion $BuildSourcePath "*AssemblyInfo.cs" "\d+\.\d+\.\d+\.\d+" $BuildBuildNumber)
-	    if ($replaceSucceed1 = $false & $replaceSucceed2 = $false)
+	    if ($replaceSucceed1 = $false -and $replaceSucceed2 = $false)
 	    	Write-Warning "No file found at $BuildSourcePath"
 	    }
 	}
