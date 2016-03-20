@@ -36,5 +36,4 @@ function ApplyVersionToAssemblies
 	    {
 	    	Write-Warning "No file found at $BuildSourcePath"
 	    }
-	}
 }
