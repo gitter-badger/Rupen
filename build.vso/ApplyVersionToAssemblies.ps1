@@ -30,18 +30,9 @@ function ApplyVersionToAssemblies
         [string]$BuildBuildNumber
     )
 
-	$replaceSuccess = (ReplaceVersion $BuildSourcePath "project.json" '\s*\"version\"\s*:\s*\"\d+\.\d+\.\d+-\*?(\w*)\"' '  "version": "' + $BuildBuildNumber + '"')
-	if ($replaceSuccess = $true)
-	{   
-	    Write-Verbose "DNX project detected, skipping Legacy check"
-	}
-	else 
-	{
-	    $replaceSuccess = (ReplaceVersion $BuildSourcePath "*AssemblyInfo.cs" "\d+\.\d+\.\d+\.\d+" $BuildBuildNumber)
-	    if ($replaceSuccess = $true)
-	    {
-	    	Write-Verbose "Legacy .NET project detected"
-	    } else {
+	$replaceSucceed1 = (ReplaceVersion $BuildSourcePath "project.json" '\s*\"version\"\s*:\s*\"\d+\.\d+\.\d+-\*?(\w*)\"' '  "version": "' + $BuildBuildNumber + '"')
+	$replaceSucceed2 = (ReplaceVersion $BuildSourcePath "*AssemblyInfo.cs" "\d+\.\d+\.\d+\.\d+" $BuildBuildNumber)
+	    if ($replaceSucceed1 = $false & $replaceSucceed2 = $false)
 	    	Write-Warning "No file found at $BuildSourcePath"
 	    }
 	}
